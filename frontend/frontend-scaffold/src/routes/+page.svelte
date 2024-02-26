@@ -1,5 +1,14 @@
 <script>
     let message = '';
+    let responseMessage = '';
+
+    // Function to simulate sending a message and receiving a response
+    // Here, you're directly setting the responseMessage for demonstration purposes
+    function sendMessageToLLMModel(message) {
+        // Simulate sending the message and getting a response
+        // This is where you would actually interact with your LLM model
+        responseMessage = 'The sky is blue.'; // Set the response message
+    }
 </script>
 
 <main class="mainGridContainer">
@@ -16,39 +25,22 @@
     <div class="chatApp">
         <h1>Welcome to <span>Scaffold!</span></h1>
 
-        <img
-            src="/scaffold-llama.jpeg"
-            alt="scaffold-llama"
-            style="width: 200px; height: 200px;"
-        />
+        <img src="/scaffold-llama.jpeg" alt="scaffold-llama" style="width: 200px; height: 200px;" />
 
-        <p>
-            Enter your message to start chatting with the <span>Lllama2-7B</span
-            > LLM model:
-        </p>
-        <input
-            type="text"
-            bind:value={message}
-            placeholder="I want to hack MongoDB Atlas! 🤫"
-            style="width: 500px; height: 100px; border: 1px solid, border-radius: 5px;"
-        />
+        <p>Enter your message to start chatting with the <span>Lllama2-7B</span> LLM model:</p>
+        <input type="text" bind:value={message} placeholder="I want to hack MongoDB Atlas! 🤫" style="width: 500px; height: 100px; border: 1px solid, border-radius: 5px;" />
         <br />
-        <button
-            on:click={() => {
-                // Here you can call the function to send the message to the LLM model
-                // For example:
-                sendMessageToLLMModel(name, message);
-                // And then clear the message input
-                message = '';
-            }}>Send</button
-        >
+        <button on:click={() => {
+            sendMessageToLLMModel(message); // Call the function with the current message
+            message = ''; // Clear the input message after sending
+        }}>Send</button>
         <p>Your chat is {message.length} characters long</p>
     </div>
 
     <div class="displayResult">
         <h1>The <span>result</span> you are looking for:</h1>
         <div>
-            <p></p>
+            <p>{responseMessage}</p>
         </div>
     </div>
 </main>
