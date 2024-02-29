@@ -1,13 +1,17 @@
 <script>
     let message = '';
-    let responseMessage = '';
+    let answer = '';
 
-    // Function to simulate sending a message and receiving a response
-    // Here, you're directly setting the responseMessage for demonstration purposes
-    function sendMessageToLLMModel(message) {
-        // Simulate sending the message and getting a response
-        // This is where you would actually interact with your LLM model
-        responseMessage = 'The sky is blue.'; // Set the response message
+    async function sendMessageToLLMModel(message) {
+        const response = await fetch('http://localhost:8080/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message }),
+        });
+        const data = await response.json();
+        answer = data.answer; // Assuming the backend responds with { answer: '...' }
     }
 </script>
 
@@ -40,7 +44,7 @@
     <div class="displayResult">
         <h1>The <span>result</span> you are looking for:</h1>
         <div>
-            <p>{responseMessage}</p>
+            <p>{answer}</p>
         </div>
     </div>
 </main>

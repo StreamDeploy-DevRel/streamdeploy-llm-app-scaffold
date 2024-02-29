@@ -1,6 +1,6 @@
 module backend
 
-go 1.22.0
+go 1.22
 
 require go.mongodb.org/mongo-driver v1.14.0
 

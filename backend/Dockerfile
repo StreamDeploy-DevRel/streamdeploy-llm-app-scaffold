@@ -1,5 +1,5 @@
 # Start from the official Go image to create a build artifact.
-FROM golang:1.18 AS builder
+FROM golang:1.22 AS builder
 
 # Copy local code to the container image.
 WORKDIR /app
