@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend/frontend-scaffold
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/frontend-scaffold:/app
+    command: npm run dev
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/go/src/app
+    command: /server
+
+  llm-service:
+    image: angelborroy/llama2:1.0.0
+    environment:
+      PROMPT: "Explain how to use this llm service"
