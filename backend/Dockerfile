@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 # Build the command inside the container.
-RUN go build -v -o server
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -v -o server
 
 # Use a Docker multi-stage build to create a lean production image.
 FROM gcr.io/distroless/base-debian10
