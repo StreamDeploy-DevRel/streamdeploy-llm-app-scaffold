@@ -1,12 +1,12 @@
-# Use an NVIDIA CUDA base image
-FROM nvidia/cuda:latest
+# Use a base python image
+FROM python:3.8
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     wget \
-    md5sum \
+    # md5sum \
     git \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,14 +19,14 @@ RUN pip3 install --no-cache-dir --upgrade pip
 # Install Python dependencies
 # Note: This assumes you have a requirements.txt file listing all needed packages.
 # If Llama 2 has specific Python package requirements, they should be included in this file.
-COPY requirements.txt /app/
+COPY llama/requirements.txt /app/
+COPY llama/download.sh /app/
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Assuming you have a script to download Llama 2 models as per README instructions
 # and it's named `download_models.sh`. This script should automate the download process,
 # accepting necessary parameters like the signed URL for model download.
-COPY download_models.sh /app/
-RUN chmod +x /app/download_models.sh
+# RUN chmod +x /app/download_models.sh
 # You would need to run this script manually or automate it with environment variables
 # since it requires interaction (URL input). Docker build process can't handle interactive input.
 
