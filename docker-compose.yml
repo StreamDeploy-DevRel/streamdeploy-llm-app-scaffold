@@ -17,6 +17,9 @@ services:
     command: /server
 
   llm-service:
-    image: angelborroy/llama2:1.0.0
+    build: ./llm-service
     environment:
-      PROMPT: "Explain how to use this llm service"
+      - PROMPT=Your default prompt or leave this to be configured elsewhere
+    # Optional: Expose port if the LLM service provides an HTTP API or similar
+    ports:
+      - "5001:5000"
