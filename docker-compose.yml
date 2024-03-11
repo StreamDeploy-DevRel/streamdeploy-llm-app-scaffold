@@ -2,12 +2,14 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend/frontend-scaffold
+      dockerfile: Dockerfile
     ports:
       - "80:80"
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -22,5 +24,5 @@ services:
   llama:
     image: r8.im/meta/llama-2-70b-chat@sha256:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3
     ports:
-      - "5000:5000"
-    runtime: nvidia
+      - "5001:5000"
+    # runtime: nvidia
