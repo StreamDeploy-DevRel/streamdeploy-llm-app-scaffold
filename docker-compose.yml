@@ -1,25 +1,28 @@
 version: '3.8'
 services:
   frontend:
-    build: ./frontend/frontend-scaffold
+    build:
+      context: ./frontend/frontend-scaffold
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend/frontend-scaffold:/app
-    command: npm run dev
-
+      - "80:80"
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      - ./backend:/go/src/app
-    command: /server
-
-  llm-service:
-    build: ./llm-service
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
     environment:
-      - PROMPT=Your default prompt or leave this to be configured elsewhere
-    # Optional: Expose port if the LLM service provides an HTTP API or similar
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  llama:
+    image: r8.im/meta/llama-2-70b-chat@sha256:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3
     ports:
       - "5001:5000"
+    # runtime: nvidia
