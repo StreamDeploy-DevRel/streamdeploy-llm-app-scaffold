@@ -17,9 +17,12 @@ services:
     command: /server
 
   llm-service:
-    build: ./llm-service
-    environment:
-      - PROMPT=Your default prompt or leave this to be configured elsewhere
-    # Optional: Expose port if the LLM service provides an HTTP API or similar
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama:/root/.ollama
     ports:
-      - "5001:5000"
+      - "11434:11434"
+    environment:
+      - gpus=all
+    command: ollama run mistral
