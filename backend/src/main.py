@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_community.llms import Ollama
+import os
 
 app = FastAPI()
 
@@ -14,6 +15,6 @@ def read_root():
 
 @app.post("/generate/")
 async def llm_generate(input: LLMInput):
-    llm = Ollama(model="mistral")
+    llm = Ollama(model="mistral", api_base_url=os.environ["OLLAMA_API_BASE_URL"])
 
     return llm.invoke(input.message)

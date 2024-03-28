@@ -1,9 +1,8 @@
 <script>
     let message = '';
     let answer = '';
-
     async function sendMessageToLLMModel(message) {
-        const response = await fetch('http://localhost:8080/ask', {
+        const response = await fetch('http://localhost:8000/generate/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -11,7 +10,7 @@
             body: JSON.stringify({ message }),
         });
         const data = await response.json();
-        answer = data.answer; // Assuming the backend responds with { answer: '...' }
+        answer = data; // Assuming the backend responds with the generated text directly
     }
 </script>
 

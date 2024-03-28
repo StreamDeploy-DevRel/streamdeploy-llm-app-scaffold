@@ -13,8 +13,10 @@ RUN npm install
 # Build the SvelteKit app
 RUN npm run build
 
+RUN npm install -g serve
+
 # Make port 3000 available to the world outside this container
 EXPOSE 3000
 
 # Run npm run preview when the container launches
-CMD ["npm", "run", "preview"]
+CMD ["serve", "-s", "build", "-l", "3000"]
