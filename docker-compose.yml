@@ -2,24 +2,25 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend/frontend-scaffold
+    container_name: frontend-scaffold
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend/frontend-scaffold:/app
-    command: npm run dev
 
   backend:
     build: ./backend
+    container_name: backend-scaffold
     ports:
-      - "8080:8080"
-    volumes:
-      - ./backend:/go/src/app
-    command: /server
+      - "8000:8000"
+    environment:
+      OLLAMA_API_URL: http://ollama:11434
 
   llm-service:
-    build: ./llm-service
-    environment:
-      - PROMPT=Your default prompt or leave this to be configured elsewhere
-    # Optional: Expose port if the LLM service provides an HTTP API or similar
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama:/root/.ollama
     ports:
-      - "5001:5000"
+      - "11434:11434"
+
+volumes:
+  ollama:
