@@ -1,14 +1,22 @@
-<script>
+<script lang="ts">
     let message = '';
     let answer = '';
-    async function sendMessageToLLMModel(message) {
-        const response = await fetch('http://localhost:8000/generate/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message }),
+    async function sendMessageToLLMModel() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "message": message 
         });
+
+        const requestOptions : RequestInit = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+        
+        const response = await fetch('http://localhost:8000/generate/', requestOptions);
         const data = await response.json();
         answer = data; // Assuming the backend responds with the generated text directly
     }
@@ -30,11 +38,11 @@
 
         <img src="/scaffold-llama.jpeg" alt="scaffold-llama" style="width: 200px; height: 200px;" />
 
-        <p>Enter your message to start chatting with the <span>Lllama2-7B</span> LLM model:</p>
+        <p>Enter your message to start chatting with the <span>Mistral-7B</span> LLM model:</p>
         <input type="text" bind:value={message} placeholder="I want to hack MongoDB Atlas! 🤫" style="width: 500px; height: 100px; border: 1px solid, border-radius: 5px;" />
         <br />
         <button on:click={() => {
-            sendMessageToLLMModel(message); // Call the function with the current message
+            sendMessageToLLMModel(); // Call the function with the current message
             message = ''; // Clear the input message after sending
         }}>Send</button>
         <p>Your chat is {message.length} characters long</p>

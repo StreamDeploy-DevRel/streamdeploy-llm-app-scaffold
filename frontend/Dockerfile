@@ -2,7 +2,7 @@
 FROM node:latest
 
 # Set the working directory in the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
@@ -10,13 +10,7 @@ COPY . .
 # Install any needed packages specified in package.json
 RUN npm install
 
-# Build the SvelteKit app
-RUN npm run build
 
-RUN npm install -g serve
+# Build run SvelteKit app
+CMD ["npm", "run", "dev"]
 
-# Make port 3000 available to the world outside this container
-EXPOSE 3000
-
-# Run npm run preview when the container launches
-CMD ["serve", "-s", "build", "-l", "3000"]
