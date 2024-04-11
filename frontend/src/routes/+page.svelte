@@ -1,7 +1,10 @@
 <script lang="ts">
     let message = '';
     let answer = '';
+    let isLoading = false;
+
     async function sendMessageToLLMModel() {
+        isLoading = true;
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -16,11 +19,16 @@
             redirect: "follow"
         };
         
-        const response = await fetch('http://localhost:8000/generate/', requestOptions);
-        // console.log(response);
-        const data = await response.json();
-        console.log(data)
-        answer = data; // Assuming the backend responds with the generated text directly
+        try {
+            const response = await fetch('http://localhost:8000/generate/', requestOptions);
+            const data = await response.json();
+            answer = data; // Assuming the backend responds with the generated text directly
+        } catch (error) {
+            console.error('Error:', error);
+            answer = 'An error occurred while fetching the data.';
+        } finally {
+            isLoading = false; // Set loading to false when the request is complete
+        }
     }
 </script>
 
@@ -29,14 +37,15 @@
         <h2><span>Scaffold</span> LLM App</h2>
 
         <h3>Built with:</h3>
-        <p>SvelteKit + Golang + MongoDB Atlas + Llama2-7B</p>
+        <p>SvelteKit + Python + MongoDB Atlas + Ollama</p>
         <h3>Team Members:</h3>
         <p>Tony Loehr</p>
+        <p>Clement Chang</p>
         <p>Ambro Quach</p>
     </div>
 
     <div class="chatApp">
-        <h1>Welcome to <span>Scaffold!</span></h1>
+        <h1>Welcome to <span>LLM Application Scaffold!</span></h1>
 
         <img src="/scaffold-llama.jpeg" alt="scaffold-llama" style="width: 200px; height: 200px;" />
 
@@ -47,6 +56,9 @@
             sendMessageToLLMModel(); // Call the function with the current message
             message = ''; // Clear the input message after sending
         }}>Send</button>
+        {#if isLoading}
+            <p>Please wait...</p> <!-- Display this message when isLoading is true -->
+        {/if}
         <p>Your chat is {message.length} characters long</p>
     </div>
 
