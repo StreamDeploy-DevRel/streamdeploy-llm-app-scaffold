@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend-scaffold
+    ports:
+      - "5173:5173"
+
+  backend:
+    build: ./backend
+    container_name: backend-scaffold
+    ports:
+      - "8000:8000"
+    environment:
+      OLLAMA_API_URL: http://host.docker.internal:11434
+    depends_on:
+      - llm-service
+    networks:
+      - llm-network
+
+  llm-service:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    networks:
+      - llm-network
+
+volumes:
+  ollama:
+
+networks:
+  llm-network:
