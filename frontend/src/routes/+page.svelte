@@ -17,7 +17,9 @@
         };
         
         const response = await fetch('http://localhost:8000/generate/', requestOptions);
+        // console.log(response);
         const data = await response.json();
+        console.log(data)
         answer = data; // Assuming the backend responds with the generated text directly
     }
 </script>
