@@ -13,3 +13,7 @@ To use a model from Ollama, run Ollama pull. For example, to use mistral, run th
 ollama pull mistral
 ```
 then run the docker compose command
+
+
+![LLM Application Scaffold Screenshot](https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/781/172/datas/original.jpeg)
+
