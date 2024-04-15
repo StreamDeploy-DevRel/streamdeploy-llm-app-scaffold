@@ -12,7 +12,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      OLLAMA_API_URL: http://host.docker.internal:11434
+      OLLAMA_API_URL: http://ollama:11434
       MONGODB_ATLAS_URI: "mongodb+srv://turingxo:62ZHpjo3jc6d6umV@cluster0.bcjitnm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
   llm-service:

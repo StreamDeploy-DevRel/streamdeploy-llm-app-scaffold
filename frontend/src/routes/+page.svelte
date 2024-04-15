@@ -28,11 +28,11 @@
         };
         
         try {
-            const response = await fetch('http://backend-scaffold:8000/generate/', requestOptions);
+            const response = await fetch('http://localhost:8000/generate/', requestOptions);
             const data = await response.json();
-            answer = data; // Assuming the backend responds with the generated text directly
+            answer = data.answer; // Assuming the backend responds with the generated text directly
 
-            await fetch('http://backend-scaffold:8000/save_history/', {
+            await fetch('http://localhost:8000/save_history/', {
                 method: "POST",
                 headers: myHeaders,
                 body: JSON.stringify({ message, "answer": answer }),

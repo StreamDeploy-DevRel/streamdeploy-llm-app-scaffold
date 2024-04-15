@@ -5,6 +5,7 @@ import requests
 from langchain_community.llms import Ollama
 import os
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
 app = FastAPI()
 origins = ["*"]
@@ -17,9 +18,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-mongo_client = MongoClient(os.environ["MONGODB_ATLAS_URI"])
-db = mongo_client.your_database_name
-chat_history_collection = db.chat_history
+mongo_client = MongoClient(os.environ["MONGODB_ATLAS_URI"], server_api=ServerApi('1'))
+db = mongo_client.Cluster0
+chat_history_collection = db["chat-history.input-and-output"]
 
 class LLMInput(BaseModel):
     message: str
@@ -42,12 +43,14 @@ async def download_model(model):
 
 @app.post("/generate/")
 async def llm_generate(input: LLMInput):
+    print(f"Received message: {input.message}")
     llm = Ollama(model="mistral", base_url=os.environ["OLLAMA_API_URL"])
 
     return llm.invoke(input.message)
 
 @app.post("/save_history/")
 async def save_history(input: LLMInput):
+    print(f"Received message: {input.message}, answer: {input.answer}")
     chat_history_collection.insert_one({"message": input.message, "answer": input.answer})
     return {"status": "History saved"}
 
