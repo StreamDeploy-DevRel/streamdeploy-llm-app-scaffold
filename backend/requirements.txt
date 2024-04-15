@@ -7,6 +7,7 @@ certifi==2024.2.2
 charset-normalizer==3.3.2
 click==8.1.7
 dataclasses-json==0.6.4
+dnspython==2.2.1
 fastapi==0.110.0
 frozenlist==1.4.1
 gitdb==4.0.11
@@ -27,6 +28,7 @@ orjson==3.9.15
 packaging==23.2
 pydantic==2.6.4
 pydantic_core==2.16.3
+pymongo==3.12.0
 PyYAML==6.0.1
 requests==2.31.0
 setuptools==69.0.3

@@ -3,6 +3,14 @@
     let answer = '';
     let isLoading = false;
 
+    let chatHistory = [];
+
+    // Add this function
+    async function fetchChatHistory() {
+        const response = await fetch('http://backend-scaffold:8000/get_history/');
+        chatHistory = await response.json();
+    }
+
     async function sendMessageToLLMModel() {
         isLoading = true;
         const myHeaders = new Headers();
@@ -20,9 +28,16 @@
         };
         
         try {
-            const response = await fetch('http://localhost:8000/generate/', requestOptions);
+            const response = await fetch('http://backend-scaffold:8000/generate/', requestOptions);
             const data = await response.json();
             answer = data; // Assuming the backend responds with the generated text directly
+
+            await fetch('http://backend-scaffold:8000/save_history/', {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify({ message, "answer": answer }),
+                redirect: "follow"
+            });
         } catch (error) {
             console.error('Error:', error);
             answer = 'An error occurred while fetching the data.';
@@ -30,6 +45,8 @@
             isLoading = false; // Set loading to false when the request is complete
         }
     }
+
+    
 </script>
 
 <main class="mainGridContainer">
@@ -42,6 +59,12 @@
         <p>Tony Loehr</p>
         <p>Clement Chang</p>
         <p>Ambro Quach</p>
+
+        <ul>
+            {#each chatHistory as history}
+                <li>{history.message} - {history.answer}</li>
+            {/each}
+        </ul>
     </div>
 
     <div class="chatApp">
