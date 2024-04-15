@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 from langchain_community.llms import Ollama
 import os
+from pymongo import MongoClient
 
 app = FastAPI()
 origins = ["*"]
@@ -16,8 +17,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+mongo_client = MongoClient(os.environ["MONGODB_ATLAS_URI"])
+db = mongo_client.your_database_name
+chat_history_collection = db.chat_history
+
 class LLMInput(BaseModel):
     message: str
+    answer: str
 
 @app.get("/")
 def read_root():
@@ -39,3 +45,13 @@ async def llm_generate(input: LLMInput):
     llm = Ollama(model="mistral", base_url=os.environ["OLLAMA_API_URL"])
 
     return llm.invoke(input.message)
+
+@app.post("/save_history/")
+async def save_history(input: LLMInput):
+    chat_history_collection.insert_one({"message": input.message, "answer": input.answer})
+    return {"status": "History saved"}
+
+@app.get("/get_history/")
+def get_history():
+    history = list(chat_history_collection.find({}, {'_id': 0}))
+    return history
